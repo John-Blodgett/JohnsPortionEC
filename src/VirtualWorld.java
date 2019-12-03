@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -46,7 +47,6 @@ public final class VirtualWorld
    public WorldModel world;
    public WorldView view;
    public EventScheduler scheduler;
-   public Hatalsky hatalsky;
 
    public long next_time;
 
@@ -236,21 +236,57 @@ public final class VirtualWorld
                return parseOcto(properties, world, imageStore);
             case Obstacle.OBSTACLE_KEY:
                return parseObstacle(properties, world, imageStore);
-            case Fish.FISH_KEY:
-               return parseFish(properties, world, imageStore);
-            case Atlantis.ATLANTIS_KEY:
-               return parseAtlantis(properties, world, imageStore);
-            case Sgrass.SGRASS_KEY:
-               return parseSgrass(properties, world, imageStore);
             case Hatalsky.HATALSKY_ID:
                return parseHatal(properties, world, imageStore);
+            case ChargeIntoOutlet.INTO_OUTLET_ID:
+               return parseIntoOutlet(properties, world, imageStore);
+            case ChargePlug.PLUG_ID:
+               return parsePlug(properties, world, imageStore);
+            case ChargePowerBrick.POWER_BRICK_ID:
+               return parsePowerBrick(properties, world, imageStore);
+
          }
+
       }
 
       return false;
    }
+   public boolean parsePowerBrick(String [] properties, WorldModel world,
+                                    ImageStore imageStore) {
+      if (properties.length == ChargePowerBrick.POWER_BRICK_NUM_PROPERTIES) {
+         Point pt = new Point(Integer.parseInt(properties[2]),
+                 Integer.parseInt(properties[3]));
+         ChargePowerBrick powerBrick = new ChargePowerBrick(ChargePowerBrick.POWER_BRICK_ID, pt, imageStore.getImageList(imageStore,ChargePowerBrick.POWER_BRICK_ID), 0 );
+         world.tryAddEntity(powerBrick);
+         Hatalsky.addChargerParts(powerBrick);
+      }
+      return properties.length == ChargePowerBrick.POWER_BRICK_NUM_PROPERTIES;
+   }
+   public boolean parseIntoOutlet(String [] properties, WorldModel world,
+                                    ImageStore imageStore) {
+      if (properties.length == ChargeIntoOutlet.INTO_OUTLET_NUM_PROPERTIES) {
+         Point pt = new Point(Integer.parseInt(properties[2]),
+                 Integer.parseInt(properties[3]));
+         ChargeIntoOutlet outlet = new ChargeIntoOutlet(ChargeIntoOutlet.INTO_OUTLET_ID, pt, imageStore.getImageList(imageStore, ChargeIntoOutlet.INTO_OUTLET_ID), 0 );
+         world.tryAddEntity(outlet);
+         Hatalsky.addChargerParts(outlet);
+      }
+      return properties.length == ChargeIntoOutlet.INTO_OUTLET_NUM_PROPERTIES;
+   }
+   public boolean parsePlug(String [] properties, WorldModel world,
+                                    ImageStore imageStore) {
+      if (properties.length == ChargePlug.PLUG_NUM_PROPERTIES) {
+         Point pt = new Point(Integer.parseInt(properties[2]),
+                 Integer.parseInt(properties[3]));
+         ChargePlug plug = new ChargePlug(ChargePlug.PLUG_ID, pt, imageStore.getImageList(imageStore,ChargePlug.PLUG_ID), 0 );
+         world.tryAddEntity(plug);
+         Hatalsky.addChargerParts(plug);
+      }
+      return properties.length == ChargePlug.PLUG_NUM_PROPERTIES;
+   }
 
-   public static boolean parseHatal(String [] properties, WorldModel world,
+
+   public boolean parseHatal(String [] properties, WorldModel world,
                                    ImageStore imageStore) {
       if (properties.length == Hatalsky.HATALSKY_NUM_PROPERTIES) {
          Point pt = new Point(Integer.parseInt(properties[2]),
@@ -313,49 +349,11 @@ public final class VirtualWorld
       return properties.length == Obstacle.OBSTACLE_NUM_PROPERTIES;
    }
 
-   public static boolean parseFish(String [] properties, WorldModel world,
-                                   ImageStore imageStore)
-   {
-      if (properties.length == Fish.FISH_NUM_PROPERTIES)
-      {
-         Point pt = new Point(Integer.parseInt(properties[Fish.FISH_COL]),
-                 Integer.parseInt(properties[Fish.FISH_ROW]));
-         Fish fish = new Fish(properties[Fish.FISH_ID],
-                 pt, Integer.parseInt(properties[Fish.FISH_ACTION_PERIOD]),
-                 imageStore.getImageList(imageStore, Fish.FISH_KEY));
-         world.tryAddEntity( fish);
-      }
 
-      return properties.length == Fish.FISH_NUM_PROPERTIES;
-   }
 
-   public static boolean parseAtlantis(String [] properties, WorldModel world,
-                                       ImageStore imageStore)
-   {
-      if (properties.length == Atlantis.ATLANTIS_NUM_PROPERTIES)
-      {
-         Point pt = new Point(Integer.parseInt(properties[Atlantis.ATLANTIS_COL]),
-                 Integer.parseInt(properties[Atlantis.ATLANTIS_ROW]));
-         Atlantis atlantis = new Atlantis(properties[Atlantis.ATLANTIS_ID],pt, imageStore.getImageList(imageStore, Atlantis.ATLANTIS_KEY));
-         world.tryAddEntity(atlantis);
-      }
 
-      return properties.length == Atlantis.ATLANTIS_NUM_PROPERTIES;
-   }
 
-   public boolean parseSgrass(String [] properties, WorldModel world,
-                                     ImageStore imageStore)
-   {
-      if (properties.length == Sgrass.SGRASS_NUM_PROPERTIES)
-      {
-         Point pt = new Point(Integer.parseInt(properties[Sgrass.SGRASS_COL]),
-                 Integer.parseInt(properties[Sgrass.SGRASS_ROW]));
-         Sgrass sgrass = new Sgrass(properties[Sgrass.SGRASS_ID], pt,imageStore.getImageList(imageStore, Sgrass.SGRASS_KEY), Integer.parseInt(properties[Sgrass.SGRASS_ACTION_PERIOD]));
-         world.tryAddEntity(sgrass);
-      }
 
-      return properties.length == Sgrass.SGRASS_NUM_PROPERTIES;
-   }
    public static final String BGND_KEY = "background";
    public static final int BGND_NUM_PROPERTIES = 4;
    public static final int BGND_ID = 1;
@@ -365,6 +363,8 @@ public final class VirtualWorld
    public static final int COLOR_MASK = 0xffffff;
    public static final int KEYED_IMAGE_MIN = 5;
    public static final int PROPERTY_KEY = 0;
+
+
 
 
 }

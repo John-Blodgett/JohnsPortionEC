@@ -1,7 +1,7 @@
-octo octo_6_3 1 18 2 813 100
-octo octo_6_3 23 18 2 813 100
-octo octo_6_3 6 6 2 813 100
 hatalsky hatalsky_2_2 19 5
+PowerBrick octo_6_3 1 18
+Plug octo_6_3 23 18
+IntoOutlet octo_6_3 6 6
 obstacle obstacle_3_3 0 0
 obstacle obstacle_3_3 1 0
 obstacle obstacle_3_3 2 0

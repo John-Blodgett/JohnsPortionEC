@@ -7,6 +7,7 @@ public class Hatalsky extends MoveEntity{
     private static Hatalsky hatalsky;
     public static final String HATALSKY_ID = "hatalsky";
     public static final int HATALSKY_NUM_PROPERTIES = 4;
+    private static List<ChargerParts> chargerParts;
     private Hatalsky(String id, Point position, List<PImage> images, int imageIndex, int actionPeriod,
                      int animationPeriod){
         super(id,position,images,imageIndex, actionPeriod,animationPeriod);
@@ -31,10 +32,19 @@ public class Hatalsky extends MoveEntity{
         Point nextPoint = new Point(this.getPosition().x + dx, this.getPosition().y + dy);
         if (world.withinBounds(nextPoint) && !world.isOccupied(nextPoint))
         {
+            for (ChargerParts i : chargerParts)
+            {
+                if (i.getPosition().equals(nextPoint))
+                {
+                    i.addPart(world);
+                }
+            }
             world.moveEntity(this, nextPoint);
             return true;
         }
         return false;
 
     }
+
+    public static void addChargerParts(ChargerParts chargerPart){ chargerParts.add(chargerPart);}
 }

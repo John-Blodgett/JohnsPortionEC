@@ -37,4 +37,7 @@ background_default images/none.bmp
 madStudent images/none.bmp
 annoyStudent images/none.bmp
 inqStudent images/none.bmp
+PowerBrick images/PowerBrick.bmp
+Plug images/Plug.bmp
+IntoOutlet images/IntoOutlet.bmp
 

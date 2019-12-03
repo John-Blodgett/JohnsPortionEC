@@ -8,7 +8,9 @@ public abstract class ChargerParts extends Entity {
         super(id, position, images, imageIndex);
     }
     public int getTotalParts(){return totalParts;}
-    public void addPart(){this.totalParts +=1;}
+    public void addPart(WorldModel world){
+        this.totalParts +=1;
+    world.removeEntity(this);}
 
 
 }

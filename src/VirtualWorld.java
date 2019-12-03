@@ -47,6 +47,7 @@ public final class VirtualWorld
    public WorldModel world;
    public WorldView view;
    public EventScheduler scheduler;
+   private static boolean start = false;
 
    public long next_time;
 
@@ -58,14 +59,13 @@ public final class VirtualWorld
    /*
       Processing entry point for "sketch" setup.
    */
-   public void setup()
-   {
-      this.imageStore = new ImageStore(
-         createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
+   public void setup() {
+         this.imageStore = new ImageStore(
+                 createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
       this.world = new WorldModel(WORLD_ROWS, WORLD_COLS,
-         createDefaultBackground(imageStore));
+              createDefaultBackground(imageStore));
       this.view = new WorldView(VIEW_ROWS, VIEW_COLS, this, world,
-         TILE_WIDTH, TILE_HEIGHT);
+              TILE_WIDTH, TILE_HEIGHT);
       this.scheduler = new EventScheduler(timeScale);
 
       loadImages(IMAGE_LIST_FILE_NAME, imageStore, this);
@@ -76,16 +76,29 @@ public final class VirtualWorld
       next_time = System.currentTimeMillis() + TIMER_ACTION_PERIOD;
    }
 
+   public void mouseClicked(){start = true;}
+
    public void draw()
    {
-      long time = System.currentTimeMillis();
-      if (time >= next_time)
-      {
-         EventScheduler.updateOnTime(this.scheduler, time);
-         next_time = time + TIMER_ACTION_PERIOD;
-      }
+      if (start) {
+         long time = System.currentTimeMillis();
+         if (time >= next_time) {
+            EventScheduler.updateOnTime(this.scheduler, time);
+            next_time = time + TIMER_ACTION_PERIOD;
+         }
 
-      view.drawViewport();
+         view.drawViewport();
+      }
+      else
+      {
+         Color color = new Color(1, 70, 174);
+         fill(color.getRGB());
+         rect(0, 0, 800, 650);
+         fill(255);
+         text("Your battery is running low (4%)", 200, 200);
+         text("Click Anywhere to Continue", 200, 300);
+
+      }
    }
 
    public void keyPressed()
@@ -193,8 +206,8 @@ public final class VirtualWorld
 
    public static void main(String [] args)
    {
-      parseCommandLine(args);
-      PApplet.main(VirtualWorld.class);
+         parseCommandLine(args);
+         PApplet.main(VirtualWorld.class);
    }
    public void load(Scanner in, WorldModel world, ImageStore imageStore)
    {
@@ -226,10 +239,8 @@ public final class VirtualWorld
                                      ImageStore imageStore)
    {
       String[] properties = line.split("\\s");
-      if (properties.length > 0)
-      {
-         switch (properties[PROPERTY_KEY])
-         {
+      if (properties.length > 0) {
+         switch (properties[PROPERTY_KEY]) {
             case BGND_KEY:
                return parseBackground(properties, world, imageStore);
             case Octo_Full.OCTO_KEY:
@@ -246,6 +257,7 @@ public final class VirtualWorld
                return parsePowerBrick(properties, world, imageStore);
 
          }
+
 
       }
 

@@ -1,5 +1,6 @@
 import processing.core.PImage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hatalsky extends MoveEntity{
@@ -7,7 +8,7 @@ public class Hatalsky extends MoveEntity{
     private static Hatalsky hatalsky;
     public static final String HATALSKY_ID = "hatalsky";
     public static final int HATALSKY_NUM_PROPERTIES = 4;
-    private static List<ChargerParts> chargerParts;
+    private static List<ChargerParts> chargerParts = new ArrayList<>();
     private Hatalsky(String id, Point position, List<PImage> images, int imageIndex, int actionPeriod,
                      int animationPeriod){
         super(id,position,images,imageIndex, actionPeriod,animationPeriod);
@@ -34,7 +35,7 @@ public class Hatalsky extends MoveEntity{
         {
             for (ChargerParts i : chargerParts)
             {
-                if (i.getPosition().equals(nextPoint))
+                if (Point.adjacent(nextPoint, i.getPosition()))
                 {
                     i.addPart(world);
                 }

@@ -66,10 +66,18 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
+          <line>79</line>
+          <properties class="VirtualWorld" method="mouseClicked">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
-          <line>260</line>
-          <option name="timeStamp" value="3" />
+          <line>210</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Hatalsky extends MoveEntity{
     private int charger_part_count = 0;
-    public static Hatalsky hatalsky;
+    private static Hatalsky hatalsky;
     public static final String HATALSKY_ID = "hatalsky";
     public static final int HATALSKY_NUM_PROPERTIES = 4;
     private Hatalsky(String id, Point position, List<PImage> images, int imageIndex, int actionPeriod,

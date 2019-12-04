@@ -202,7 +202,7 @@ public final class VirtualWorld
    public static void scheduleActions(WorldModel world,
       EventScheduler scheduler, ImageStore imageStore)
    {
-      for (Entity entity : world.entities)
+      for (Entity entity : world.nonObsentities)
       {
          //Only start actions for entities that include action (not those with just animations)
 

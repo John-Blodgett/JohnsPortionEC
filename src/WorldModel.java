@@ -14,6 +14,7 @@ final class WorldModel
    public Background background[][];
    public Entity occupancy[][];
    public Set<Entity> entities;
+   public Set<Entity> nonObsentities = new HashSet<>();
 
    public WorldModel(int numRows, int numCols, Background defaultBackground)
    {
@@ -107,7 +108,12 @@ final class WorldModel
       if (withinBounds( entity.getPosition()))
       {
          setOccupancyCell(entity.getPosition(), entity);
-         entities.add(entity);
+         if (entity instanceof Obstacle)
+         {entities.add(entity);}
+         else
+         {entities.add(entity);
+         nonObsentities.add(entity);}
+
       }
    }
 

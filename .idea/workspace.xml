@@ -45,7 +45,6 @@
     <configuration name="VirtualWorld" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="VirtualWorld" />
       <module name="Project5Hatal" />
-      <option name="PROGRAM_PARAMETERS" value="-fastest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

@@ -17,7 +17,7 @@ public class MadStudent extends MoveEntity implements Student {
         if (!this.getPosition().equals(nextPos)) {
             Optional<Entity> occupant = world.getOccupant(nextPos);
             if (occupant.getClass().equals(Hatalsky.class)) {
-                Hatalsky.hitByStident();
+//                Hatalsky.hitByStident();
             }
             world.moveEntity(this, nextPos);
         }
@@ -42,9 +42,7 @@ public class MadStudent extends MoveEntity implements Student {
                 Hatalsky.class);
         moveTo(world, fullTarget.get(), scheduler);
         VirtualWorld.scheduleActions(world, scheduler, imageStore);
-        scheduler.scheduleEvent(this,
-                new Animation(this, world, imageStore, scheduler, 0),
-                this.getActionPeriod());
+
 
     }
 }

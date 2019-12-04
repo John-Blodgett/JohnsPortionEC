@@ -6,4 +6,12 @@ public class MadStudent extends MoveEntity implements Student {
                      int animationPeriod){
         super(id,position,images,imageIndex, actionPeriod,animationPeriod);
     }
+    public void playAudio(){
+        try{
+            AudioPlayer player = new AudioPlayer("AudioClips/madSample.wav");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+    }
 }

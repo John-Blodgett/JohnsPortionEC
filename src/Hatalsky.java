@@ -3,7 +3,7 @@ import processing.core.PImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hatalsky extends MoveEntity{
+public class Hatalsky extends AnimationEntity{
     private int charger_part_count = 0;
     private static Hatalsky hatalsky;
     public static final String HATALSKY_ID = "hatalsky";
@@ -14,17 +14,18 @@ public class Hatalsky extends MoveEntity{
         super(id,position,images,imageIndex, actionPeriod,animationPeriod);
         this.charger_part_count = charger_part_count;
     }
-    private static Hatalsky setInstance(ImageStore imageStore, Point p){
+    private static Hatalsky setInstance(ImageStore imageStore, Point p, EventScheduler scheduler, WorldModel world){
         if (hatalsky == null){
-            hatalsky = new Hatalsky(HATALSKY_ID, p, imageStore.getImageList(imageStore, HATALSKY_ID),0 ,0,0);
+            hatalsky = new Hatalsky(HATALSKY_ID, p, imageStore.getImageList(imageStore, HATALSKY_ID),0 ,0,255);
         }
+        hatalsky.scheduleActions(scheduler,world,imageStore);
         return hatalsky;
     }
 
     public static Hatalsky getInstance(){return hatalsky;}
 
-    public static Hatalsky getHatalsky(ImageStore imageStore, Point p) {
-        return setInstance(imageStore, p);
+    public static Hatalsky getHatalsky(ImageStore imageStore, Point p, EventScheduler scheduler, WorldModel world) {
+        return setInstance(imageStore, p, scheduler, world);
     }
 
     public boolean moveTo(WorldModel world,
@@ -46,6 +47,10 @@ public class Hatalsky extends MoveEntity{
         return false;
 
     }
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore)
+    {scheduler.scheduleEvent(this, new Animation(this, world, imageStore,scheduler, 0),
+            getAnimationPeriod());}
 
     public static void addChargerParts(ChargerParts chargerPart){ chargerParts.add(chargerPart);}
+
 }

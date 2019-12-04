@@ -95,8 +95,9 @@ public final class VirtualWorld
          fill(color.getRGB());
          rect(0, 0, 800, 650);
          fill(255);
-         text("Your battery is running low (4%)", 200, 200);
-         text("Click Anywhere to Continue", 200, 300);
+         textSize(32);
+         text("Your battery is running low (4%)", 175, 200);
+         text("Click Anywhere to Continue", 175, 300);
 
       }
    }
@@ -123,7 +124,9 @@ public final class VirtualWorld
                dx = 1;
                break;
          }
-         Hatalsky.getInstance().moveTo(world, dx, dy, scheduler);
+         if (start == true){
+            Hatalsky.getInstance().moveTo(world, dx, dy, scheduler);
+         }
       }
    }
 
@@ -303,7 +306,7 @@ public final class VirtualWorld
       if (properties.length == Hatalsky.HATALSKY_NUM_PROPERTIES) {
          Point pt = new Point(Integer.parseInt(properties[2]),
                  Integer.parseInt(properties[3]));
-         Hatalsky hatalsky = Hatalsky.getHatalsky(imageStore, pt);
+         Hatalsky hatalsky = Hatalsky.getHatalsky(imageStore, pt, scheduler, world);
          world.tryAddEntity(hatalsky);
       }
       return properties.length == Hatalsky.HATALSKY_NUM_PROPERTIES;

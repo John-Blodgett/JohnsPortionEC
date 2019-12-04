@@ -1,9 +1,8 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.List;
 
 import processing.core.*;
 
@@ -59,6 +58,7 @@ public final class VirtualWorld
    private static boolean startBattery = true;
    private static int GAME_TIMER = 30;
    private static int BATTERY_INTERVALS = 5;
+   private Random rand = new Random();
 
    public long next_time;
 
@@ -381,8 +381,14 @@ public final class VirtualWorld
    public boolean parsePowerBrick(String [] properties, WorldModel world,
                                   ImageStore imageStore) {
       if (properties.length == ChargePowerBrick.POWER_BRICK_NUM_PROPERTIES) {
-         Point pt = new Point(Integer.parseInt(properties[2]),
-                 Integer.parseInt(properties[3]));
+         List<Point> pointList = new ArrayList<>();
+         pointList.add(new Point(1,18));
+         pointList.add(new Point(5,18));
+         pointList.add(new Point(1,8));
+         pointList.add(new Point(6,16));
+         pointList.add(new Point(6,14));
+         int randint = rand.nextInt(5);
+         Point pt = pointList.get(randint);
          ChargePowerBrick powerBrick = new ChargePowerBrick(ChargePowerBrick.POWER_BRICK_ID, pt, imageStore.getImageList(imageStore,ChargePowerBrick.POWER_BRICK_ID), 0 );
          world.tryAddEntity(powerBrick);
          Hatalsky.addChargerParts(powerBrick);
@@ -392,8 +398,14 @@ public final class VirtualWorld
    public boolean parseIntoOutlet(String [] properties, WorldModel world,
                                   ImageStore imageStore) {
       if (properties.length == ChargeIntoOutlet.INTO_OUTLET_NUM_PROPERTIES) {
-         Point pt = new Point(Integer.parseInt(properties[2]),
-                 Integer.parseInt(properties[3]));
+         List<Point> pointList = new ArrayList<>();
+         pointList.add(new Point(6,6));
+         pointList.add(new Point(1,1));
+         pointList.add(new Point(1,8));
+         pointList.add(new Point(10,1));
+         pointList.add(new Point(9,3));
+         int randint = rand.nextInt(5);
+         Point pt = pointList.get(randint);
          ChargeIntoOutlet outlet = new ChargeIntoOutlet(ChargeIntoOutlet.INTO_OUTLET_ID, pt, imageStore.getImageList(imageStore, ChargeIntoOutlet.INTO_OUTLET_ID), 0 );
          world.tryAddEntity(outlet);
          Hatalsky.addChargerParts(outlet);
@@ -403,8 +415,14 @@ public final class VirtualWorld
    public boolean parsePlug(String [] properties, WorldModel world,
                             ImageStore imageStore) {
       if (properties.length == ChargePlug.PLUG_NUM_PROPERTIES) {
-         Point pt = new Point(Integer.parseInt(properties[2]),
-                 Integer.parseInt(properties[3]));
+         List<Point> pointList = new ArrayList<>();
+         pointList.add(new Point(23,18));
+         pointList.add(new Point(20,18));
+         pointList.add(new Point(15,17));
+         pointList.add(new Point(15,12));
+         pointList.add(new Point(13,17));
+         int randint = rand.nextInt(5);
+         Point pt = pointList.get(randint);
          ChargePlug plug = new ChargePlug(ChargePlug.PLUG_ID, pt, imageStore.getImageList(imageStore,ChargePlug.PLUG_ID), 0 );
          world.tryAddEntity(plug);
          Hatalsky.addChargerParts(plug);

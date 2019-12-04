@@ -45,5 +45,12 @@ public class MadStudent extends MoveEntity implements Student {
                 new Animation(this, world, imageStore, scheduler, 0),
                 this.getActionPeriod());
 
+    public void playAudio(){
+        try{
+            AudioPlayer player = new AudioPlayer("AudioClips/madSample.wav");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 }

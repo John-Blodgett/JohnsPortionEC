@@ -45,5 +45,12 @@ public class InquisiteStudent extends MoveEntity implements Student {
                 new Animation(this, world, imageStore, scheduler, 0),
                 this.getActionPeriod());
 
+    public void playAudio(){
+        try{
+            AudioPlayer player = new AudioPlayer("AudioClips/inquisiteSample.wav");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 }

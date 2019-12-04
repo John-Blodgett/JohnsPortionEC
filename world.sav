@@ -2,6 +2,7 @@ hatalsky hatalsky_2_2 19 5
 PowerBrick octo_6_3 1 18
 Plug octo_6_3 23 18
 IntoOutlet octo_6_3 6 6
+battery1 battery_0_2 23 0
 obstacle obstacle_3_3 0 0
 obstacle obstacle_3_3 1 0
 obstacle obstacle_3_3 2 0
@@ -25,8 +26,6 @@ obstacle obstacle_3_3 19 0
 obstacle obstacle_3_3 20 0
 obstacle obstacle_3_3 21 0
 obstacle obstacle_3_3 22 0
-obstacle obstacle_3_3 23 0
-obstacle obstacle_3_3 24 0
 obstacle obstacle_3_3 24 1
 obstacle obstacle_3_3 24 2
 obstacle obstacle_3_3 24 3

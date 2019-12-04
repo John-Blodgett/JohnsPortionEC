@@ -55,6 +55,7 @@ public final class VirtualWorld
    public static boolean endLose = false;
    public static boolean endWin = false;
    private static boolean startSpawn = true;
+   private Entity curBattery;
 
    public long next_time;
 
@@ -154,6 +155,9 @@ public final class VirtualWorld
                dx = -1;
                break;
             case RIGHT:
+               curBattery = ((Battery1)curBattery).changeBattery(world, imageStore);
+               curBattery = ((Battery2)curBattery).changeBattery(world, imageStore);
+               curBattery = ((Battery3)curBattery).changeBattery(world, imageStore, scheduler);
                dx = 1;
                break;
          }
@@ -323,13 +327,24 @@ public final class VirtualWorld
                return parsePlug(properties, world, imageStore);
             case ChargePowerBrick.POWER_BRICK_ID:
                return parsePowerBrick(properties, world, imageStore);
-
+            case Battery1.BATTERY1_ID:
+               return parseBattery(properties, world, imageStore);
          }
-
-
       }
 
       return false;
+   }
+
+   public boolean parseBattery(String [] properties, WorldModel world,
+                                  ImageStore imageStore) {
+      if (properties.length == Battery1.BATTERY1_NUM_PROP) {
+         Point pt = new Point(Integer.parseInt(properties[2]),
+                 Integer.parseInt(properties[3]));
+         Battery1 battery1 = new Battery1(Battery1.BATTERY1_ID, pt, imageStore.getImageList(imageStore, Battery1.BATTERY1_ID), 0);
+         world.tryAddEntity(battery1);
+         curBattery = battery1;
+      }
+      return properties.length == Battery1.BATTERY1_NUM_PROP;
    }
    public boolean parsePowerBrick(String [] properties, WorldModel world,
                                     ImageStore imageStore) {

@@ -68,16 +68,11 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
-          <line>79</line>
-          <properties class="VirtualWorld" method="mouseClicked">
+          <line>82</line>
+          <properties class="VirtualWorld">
             <option name="EMULATED" value="true" />
           </properties>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
-          <line>210</line>
-          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -2,6 +2,8 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Hatalsky extends AnimationEntity{
     private int charger_part_count = 0;
@@ -25,7 +27,9 @@ public class Hatalsky extends AnimationEntity{
     public static Hatalsky getInstance(){return hatalsky;}
 
     public static Hatalsky getHatalsky(ImageStore imageStore, Point p, EventScheduler scheduler, WorldModel world) {
+        StudentFactory.addStudent(world, imageStore, scheduler);
         return setInstance(imageStore, p, scheduler, world);
+
     }
 
     public boolean moveTo(WorldModel world,
@@ -51,6 +55,16 @@ public class Hatalsky extends AnimationEntity{
     {scheduler.scheduleEvent(this, new Animation(this, world, imageStore,scheduler, 0),
             getAnimationPeriod());}
 
-    public static void addChargerParts(ChargerParts chargerPart){ chargerParts.add(chargerPart);}
+    public static void addChargerParts(ChargerParts chargerPart){ chargerParts.add(chargerPart); }
 
+    public static void hitByStident()
+    {
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                VirtualWorld.setStart(false); }
+                },5*1000 );
+        VirtualWorld.setStart(true);
+    }
 }

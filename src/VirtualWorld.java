@@ -2,6 +2,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Timer;
+
 import processing.core.*;
 
 /*
@@ -48,6 +50,7 @@ public final class VirtualWorld
    public WorldView view;
    public EventScheduler scheduler;
    private static boolean start = false;
+   private int numMovees = 0;
 
    public long next_time;
 
@@ -86,7 +89,6 @@ public final class VirtualWorld
             EventScheduler.updateOnTime(this.scheduler, time);
             next_time = time + TIMER_ACTION_PERIOD;
          }
-
          view.drawViewport();
       }
       else
@@ -125,6 +127,12 @@ public final class VirtualWorld
                break;
          }
          if (start == true){
+            numMovees +=1;
+            if (numMovees == 5)
+            {
+               StudentFactory.addStudent(world, imageStore, scheduler);
+               numMovees = 0;
+            }
             Hatalsky.getInstance().moveTo(world, dx, dy, scheduler);
          }
       }
@@ -364,11 +372,6 @@ public final class VirtualWorld
       return properties.length == Obstacle.OBSTACLE_NUM_PROPERTIES;
    }
 
-
-
-
-
-
    public static final String BGND_KEY = "background";
    public static final int BGND_NUM_PROPERTIES = 4;
    public static final int BGND_ID = 1;
@@ -379,7 +382,7 @@ public final class VirtualWorld
    public static final int KEYED_IMAGE_MIN = 5;
    public static final int PROPERTY_KEY = 0;
 
-
-
-
+   public static void setStart(boolean start) {
+      VirtualWorld.start = start;
+   }
 }

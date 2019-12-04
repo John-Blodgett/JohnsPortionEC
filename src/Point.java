@@ -40,4 +40,16 @@ final class Point
       return (p1.x == p2.x && Math.abs(p1.y - p2.y) == 1) ||
               (p1.y == p2.y && Math.abs(p1.x - p2.x) == 1);
    }
+   public int getX() {
+      return x;
+   }
+
+   public int getY() {
+      return y;
+   }
+
+   public Point translate(Point p2)
+   {
+      return new Point(this.getX() + p2.getX(), this.getY() + p2.getY());
+   }
 }

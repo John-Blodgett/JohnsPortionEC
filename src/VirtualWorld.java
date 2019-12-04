@@ -53,10 +53,12 @@ public final class VirtualWorld
    private static boolean start = false;
    private int numMovees = 0;
    public static boolean endWin = false;
+   public static boolean endLose = false;
    private static boolean startSpawn = true;
    private Entity curBattery;
    private static boolean startBattery = true;
-   private static boolean startGameTimer = true;
+   private static int GAME_TIMER = 30;
+   private static int BATTERY_INTERVALS = 5;
 
    public long next_time;
 
@@ -90,30 +92,37 @@ public final class VirtualWorld
       TimerTask gameTimerTask = new TimerTask() {
          public void run() {
             //go to lose game screen
-            drawLoseScreen();
+            start = false;
+            endLose = true;
          }
       };
       Timer gameTimer = new Timer("Timer");
 
-      long gameDelay = 1000L;
+      long gameDelay = GAME_TIMER*1000L;
       gameTimer.schedule(gameTimerTask, gameDelay);
-
+      if (startBattery) {
       TimerTask batteryTask = new TimerTask() {
          public void run() {
             //lose battery cell
-            if (curBattery instanceof Battery1)
-            {curBattery = ((Battery1)curBattery).changeBattery(world, imageStore);}
-            else if (curBattery instanceof Battery2)
-            {curBattery = ((Battery2)curBattery).changeBattery(world, imageStore);}
-            else
-            { curBattery = ((Battery3)curBattery).changeBattery(world, imageStore, scheduler);}
+            batteryState();
          }
       };
       Timer batteryTimer = new Timer("Timer");
 
-      long battDelay  = 15*1000L;
-      long period = 15*1000L;
-      batteryTimer.scheduleAtFixedRate(batteryTask, battDelay, period);
+      long battDelay  = BATTERY_INTERVALS*1000L;
+      long period = BATTERY_INTERVALS*1000L;
+         batteryTimer.scheduleAtFixedRate(batteryTask, battDelay, period);
+         startBattery = false;
+      }
+   }
+
+   private void batteryState(){
+      if (curBattery instanceof Battery1)
+      {curBattery = ((Battery1)curBattery).changeBattery(world, imageStore);}
+      else if (curBattery instanceof Battery2)
+      {curBattery = ((Battery2)curBattery).changeBattery(world, imageStore);}
+      else
+      { curBattery = ((Battery3)curBattery).changeBattery(world, imageStore, scheduler);}
    }
 
    public void draw()
@@ -138,11 +147,12 @@ public final class VirtualWorld
       }
       if (endWin)
       { drawWinScreen(); }
+      if (endLose)
+      { drawLoseScreen();}
    }
 
    public void drawLoseScreen()
    {
-
       Color color = new Color(255, 0, 0);
       fill(color.getRGB());
       rect(0, 0, 800, 650);
@@ -187,7 +197,6 @@ public final class VirtualWorld
             if (startSpawn){
                TimerTask repeatedTask = new TimerTask() {
                   public void run() {
-                     System.out.println("Spawn student");
                      StudentFactory.addStudent(world,imageStore,scheduler);
                   }
                };

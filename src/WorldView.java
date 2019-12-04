@@ -1,6 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.util.ConcurrentModificationException;
 import java.util.Optional;
 
 /*
@@ -63,16 +64,18 @@ final class WorldView
    }
    public void drawEntities()
    {
-      for (Entity entity : this.world.entities)
-      {
-         Point pos = entity.getPosition();
+      try {
+         for (Entity entity : this.world.entities) {
+            Point pos = entity.getPosition();
 
-         if (Viewport.contains(this.viewport, pos))
-         {
-            Point viewPoint = Viewport.worldToViewport(this.viewport, pos.x, pos.y);
-            this.screen.image(Background.getCurrentImage(entity),
-                    viewPoint.x * this.tileWidth, viewPoint.y * this.tileHeight);
+            if (Viewport.contains(this.viewport, pos)) {
+               Point viewPoint = Viewport.worldToViewport(this.viewport, pos.x, pos.y);
+               this.screen.image(Background.getCurrentImage(entity),
+                       viewPoint.x * this.tileWidth, viewPoint.y * this.tileHeight);
+            }
          }
       }
+      catch (ConcurrentModificationException e)
+      {drawEntities();}
    }
 }

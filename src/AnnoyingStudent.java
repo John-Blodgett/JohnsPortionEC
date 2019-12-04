@@ -14,12 +14,12 @@ public class AnnoyingStudent extends MoveEntity implements Student {
                           Entity target, EventScheduler scheduler) {
         Point nextPos = nextPosition(world, target.getPosition());
 
-        if (!this.getPosition().equals(nextPos)) {
-            Optional<Entity> occupant = world.getOccupant(nextPos);
-            if (occupant.getClass().equals(Hatalsky.class)) {
-//                Hatalsky.hitByStident();
-            }
-
+        if (Point.adjacent(this.getPosition(), target.getPosition()))
+        {
+                world.removeEntity(this);
+                scheduler.unscheduleAllEvents(this);
+        }
+        else if (!this.getPosition().equals(nextPos)) {
             world.moveEntity(this, nextPos);
         }
 
@@ -44,9 +44,7 @@ public class AnnoyingStudent extends MoveEntity implements Student {
         Optional<Entity> fullTarget = world.findNearest(world, this.getPosition(),
                 Hatalsky.class);
         moveTo(world, fullTarget.get(), scheduler);
-        scheduler.scheduleEvent(this,
-                new Animation(this, world, imageStore, scheduler, 0),
-                this.getActionPeriod());
+        scheduler.scheduleEvent(this, new Activity(this, world, imageStore, scheduler), 1);
 
         }
 }

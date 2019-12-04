@@ -13,12 +13,12 @@ public class MadStudent extends MoveEntity implements Student {
                           Entity target, EventScheduler scheduler)
     {
         Point nextPos = nextPosition(world, target.getPosition());
-
-        if (!this.getPosition().equals(nextPos)) {
-            Optional<Entity> occupant = world.getOccupant(nextPos);
-            if (occupant.getClass().equals(Hatalsky.class)) {
-//                Hatalsky.hitByStident();
-            }
+        if (Point.adjacent(this.getPosition(), target.getPosition()))
+        {
+                world.removeEntity(this);
+                scheduler.unscheduleAllEvents(this);
+        }
+        else if (!this.getPosition().equals(nextPos)) {
             world.moveEntity(this, nextPos);
         }
         return false;
@@ -41,7 +41,7 @@ public class MadStudent extends MoveEntity implements Student {
         Optional<Entity> fullTarget = world.findNearest(world, this.getPosition(),
                 Hatalsky.class);
         moveTo(world, fullTarget.get(), scheduler);
-        VirtualWorld.scheduleActions(world, scheduler, imageStore);
+        scheduler.scheduleEvent(this, new Activity(this, world, imageStore, scheduler), 1);
 
 
     }

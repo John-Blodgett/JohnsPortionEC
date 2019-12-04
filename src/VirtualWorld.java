@@ -143,7 +143,7 @@ public final class VirtualWorld
          }
          if (start == true){
             numMovees +=1;
-            if (numMovees == 10)
+            if (numMovees == 30)
             {
                StudentFactory.addStudent(world, imageStore, scheduler);
                numMovees = 0;

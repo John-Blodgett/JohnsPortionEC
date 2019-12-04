@@ -196,9 +196,7 @@ obstacle obstacle_12_22 8 2
 obstacle obstacle_12_22 8 14
 obstacle obstacle_12_22 9 9
 obstacle obstacle_12_22 9 8
-obstacle obstacle_12_22 9 7
 obstacle obstacle_12_22 9 6
-obstacle obstacle_12_22 10 6
 obstacle obstacle_12_22 12 9
 background sea 0 0
 background sea 1 0

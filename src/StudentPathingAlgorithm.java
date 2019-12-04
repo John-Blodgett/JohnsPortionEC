@@ -19,10 +19,11 @@ public class StudentPathingAlgorithm implements PathingStrategy {
         Point direction;
             potentialDirections.clear();
             direction = directionFunc(curPoint, end);
-            Point finalCurPoint = lastPoint;
-            potentialNeighbors.apply(curPoint).filter(canPassThrough).filter(point -> !point.equals(finalCurPoint)).forEach(potentialDirections::add);
+            potentialNeighbors.apply(curPoint).filter(canPassThrough).forEach(potentialDirections::add);
             if ((!potentialDirections.contains(curPoint.translate(direction))))
             {
+                if (potentialDirections.isEmpty())
+                {return path;}
                 curPoint = potentialDirections.get(0);
                 path.add(curPoint);
                 direction = new Point(curPoint.getX() - lastPoint.getX(), curPoint.getY() - lastPoint.getY());

@@ -75,19 +75,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>jar://C:/Program Files/Java/jdk-13/lib/src.zip!/java.base/java/util/HashMap.java</url>
-          <line>1494</line>
-          <option name="timeStamp" value="35" />
+          <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
+          <line>104</line>
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
-          <line>134</line>
-          <option name="timeStamp" value="41" />
+          <line>106</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/VirtualWorld.java</url>
-          <line>124</line>
-          <option name="timeStamp" value="42" />
+          <line>108</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

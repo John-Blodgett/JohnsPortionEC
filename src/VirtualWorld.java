@@ -15,7 +15,7 @@ current view (think virtual camera) into that world (WorldView)
  */
 
 public final class VirtualWorld
-   extends PApplet
+        extends PApplet
 {
    public static final int TIMER_ACTION_PERIOD = 100;
 
@@ -52,7 +52,7 @@ public final class VirtualWorld
    public EventScheduler scheduler;
    private static boolean start = false;
    private int numMovees = 0;
-   public static boolean end = false;
+   public static boolean endWin = false;
    private static boolean startSpawn = true;
    private Entity curBattery;
    private static boolean startBattery = true;
@@ -69,8 +69,8 @@ public final class VirtualWorld
       Processing entry point for "sketch" setup.
    */
    public void setup() {
-         this.imageStore = new ImageStore(
-                 createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
+      this.imageStore = new ImageStore(
+              createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
       this.world = new WorldModel(WORLD_ROWS, WORLD_COLS,
               createDefaultBackground(imageStore));
       this.view = new WorldView(VIEW_ROWS, VIEW_COLS, this, world,
@@ -90,7 +90,7 @@ public final class VirtualWorld
       TimerTask gameTimerTask = new TimerTask() {
          public void run() {
             //go to lose game screen
-            loseGame
+            drawLoseScreen();
          }
       };
       Timer gameTimer = new Timer("Timer");
@@ -101,7 +101,12 @@ public final class VirtualWorld
       TimerTask batteryTask = new TimerTask() {
          public void run() {
             //lose battery cell
-            loseBatteryCell
+            if (curBattery instanceof Battery1)
+            {curBattery = ((Battery1)curBattery).changeBattery(world, imageStore);}
+            else if (curBattery instanceof Battery2)
+            {curBattery = ((Battery2)curBattery).changeBattery(world, imageStore);}
+            else
+            { curBattery = ((Battery3)curBattery).changeBattery(world, imageStore, scheduler);}
          }
       };
       Timer batteryTimer = new Timer("Timer");
@@ -131,11 +136,11 @@ public final class VirtualWorld
          text("Your battery is running low (4%)", 175, 200);
          text("Click Anywhere to Continue", 175, 300);
       }
-      if (end)
-      { drawEndScreen(); }
+      if (endWin)
+      { drawWinScreen(); }
    }
 
-   public void drawEndScreen()
+   public void drawLoseScreen()
    {
 
       Color color = new Color(255, 0, 0);
@@ -144,8 +149,16 @@ public final class VirtualWorld
       fill(255);
       textSize(40);
       text("You lose!", 175, 200);
-      exit();
+   }
+   public void drawWinScreen()
+   {
 
+      Color color = new Color(0, 100, 255);
+      fill(color.getRGB());
+      rect(0, 0, 800, 650);
+      fill(255);
+      textSize(40);
+      text("You win!", 175, 200);
    }
 
    public void keyPressed()
@@ -167,9 +180,6 @@ public final class VirtualWorld
                dx = -1;
                break;
             case RIGHT:
-               curBattery = ((Battery1)curBattery).changeBattery(world, imageStore);
-               curBattery = ((Battery2)curBattery).changeBattery(world, imageStore);
-               curBattery = ((Battery3)curBattery).changeBattery(world, imageStore, scheduler);
                dx = 1;
                break;
          }
@@ -202,7 +212,7 @@ public final class VirtualWorld
    public static Background createDefaultBackground(ImageStore imageStore)
    {
       return new Background(DEFAULT_IMAGE_NAME,
-         ImageStore.getImageList(imageStore, DEFAULT_IMAGE_NAME));
+              ImageStore.getImageList(imageStore, DEFAULT_IMAGE_NAME));
    }
 
    public static PImage createImageColored(int width, int height, int color)
@@ -218,7 +228,7 @@ public final class VirtualWorld
    }
 
    private static void loadImages(String filename, ImageStore imageStore,
-      PApplet screen)
+                                  PApplet screen)
    {
       try
       {
@@ -232,7 +242,7 @@ public final class VirtualWorld
    }
 
    public void loadWorld(WorldModel world, String filename,
-      ImageStore imageStore)
+                         ImageStore imageStore)
    {
       try
       {
@@ -246,7 +256,7 @@ public final class VirtualWorld
    }
 
    public static void scheduleActions(WorldModel world,
-      EventScheduler scheduler, ImageStore imageStore)
+                                      EventScheduler scheduler, ImageStore imageStore)
    {
       for (Entity entity : world.nonObsentities)
       {
@@ -321,7 +331,7 @@ public final class VirtualWorld
       }
    }
    public boolean processLine(String line, WorldModel world,
-                                     ImageStore imageStore)
+                              ImageStore imageStore)
    {
       String[] properties = line.split("\\s");
       if (properties.length > 0) {
@@ -349,7 +359,7 @@ public final class VirtualWorld
    }
 
    public boolean parseBattery(String [] properties, WorldModel world,
-                                  ImageStore imageStore) {
+                               ImageStore imageStore) {
       if (properties.length == Battery1.BATTERY1_NUM_PROP) {
          Point pt = new Point(Integer.parseInt(properties[2]),
                  Integer.parseInt(properties[3]));
@@ -360,7 +370,7 @@ public final class VirtualWorld
       return properties.length == Battery1.BATTERY1_NUM_PROP;
    }
    public boolean parsePowerBrick(String [] properties, WorldModel world,
-                                    ImageStore imageStore) {
+                                  ImageStore imageStore) {
       if (properties.length == ChargePowerBrick.POWER_BRICK_NUM_PROPERTIES) {
          Point pt = new Point(Integer.parseInt(properties[2]),
                  Integer.parseInt(properties[3]));
@@ -371,7 +381,7 @@ public final class VirtualWorld
       return properties.length == ChargePowerBrick.POWER_BRICK_NUM_PROPERTIES;
    }
    public boolean parseIntoOutlet(String [] properties, WorldModel world,
-                                    ImageStore imageStore) {
+                                  ImageStore imageStore) {
       if (properties.length == ChargeIntoOutlet.INTO_OUTLET_NUM_PROPERTIES) {
          Point pt = new Point(Integer.parseInt(properties[2]),
                  Integer.parseInt(properties[3]));
@@ -382,7 +392,7 @@ public final class VirtualWorld
       return properties.length == ChargeIntoOutlet.INTO_OUTLET_NUM_PROPERTIES;
    }
    public boolean parsePlug(String [] properties, WorldModel world,
-                                    ImageStore imageStore) {
+                            ImageStore imageStore) {
       if (properties.length == ChargePlug.PLUG_NUM_PROPERTIES) {
          Point pt = new Point(Integer.parseInt(properties[2]),
                  Integer.parseInt(properties[3]));
@@ -395,7 +405,7 @@ public final class VirtualWorld
 
 
    public boolean parseHatal(String [] properties, WorldModel world,
-                                   ImageStore imageStore) {
+                             ImageStore imageStore) {
       if (properties.length == Hatalsky.HATALSKY_NUM_PROPERTIES) {
          Point pt = new Point(Integer.parseInt(properties[2]),
                  Integer.parseInt(properties[3]));

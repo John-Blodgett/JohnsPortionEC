@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import processing.core.*;
 
@@ -52,6 +53,7 @@ public final class VirtualWorld
    private static boolean start = false;
    private int numMovees = 0;
    public static boolean end = false;
+   private static boolean startSpawn = true;
 
    public long next_time;
 
@@ -142,12 +144,26 @@ public final class VirtualWorld
                break;
          }
          if (start == true){
-            numMovees +=1;
-            if (numMovees == 30)
-            {
-               StudentFactory.addStudent(world, imageStore, scheduler);
-               numMovees = 0;
+            if (startSpawn){
+               TimerTask repeatedTask = new TimerTask() {
+                  public void run() {
+                     System.out.println("Spawn student");
+                     StudentFactory.addStudent(world,imageStore,scheduler);
+                  }
+               };
+               Timer timer = new Timer("Timer");
+
+               long delay  = 10000L;
+               long period = 10000L;
+               timer.scheduleAtFixedRate(repeatedTask, delay, period);
+               startSpawn = false;
             }
+//            numMovees +=1;
+//            if (numMovees == 30)
+//            {
+//               StudentFactory.addStudent(world, imageStore, scheduler);
+//               numMovees = 0;
+//            }
             Hatalsky.getInstance().moveTo(world, dx, dy, scheduler);
          }
       }
@@ -228,6 +244,19 @@ public final class VirtualWorld
                break;
          }
       }
+   }
+
+   public void scheduleStudentSpawn(){
+      StudentFactory.addStudent(world, imageStore, scheduler);
+      TimerTask task = new TimerTask() {
+         @Override
+         public void run() {
+            System.out.println("Spawn student");
+            scheduleStudentSpawn();
+         }
+      };
+      Timer timer = new Timer();
+      timer.schedule(task,100000);
    }
 
    public static void main(String [] args)

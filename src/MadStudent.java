@@ -41,7 +41,7 @@ public class MadStudent extends MoveEntity implements Student {
         Optional<Entity> fullTarget = world.findNearest(world, this.getPosition(),
                 Hatalsky.class);
         moveTo(world, fullTarget.get(), scheduler);
-        scheduler.scheduleEvent(this, new Activity(this, world, imageStore, scheduler), 1);
+        scheduler.scheduleEvent(this, new Activity(this, world, imageStore, scheduler), this.getActionPeriod());
 
 
     }

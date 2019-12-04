@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AnnoyingStudent extends MoveEntity implements Student {
-    PathingStrategy strategy = new AStarPathingStrategy();
+    PathingStrategy strategy = new StudentPathingAlgorithm();
 
     public AnnoyingStudent(String id, Point position, List<PImage> images, int imageIndex, int actionPeriod,
                            int animationPeriod) {
@@ -44,7 +44,7 @@ public class AnnoyingStudent extends MoveEntity implements Student {
         Optional<Entity> fullTarget = world.findNearest(world, this.getPosition(),
                 Hatalsky.class);
         moveTo(world, fullTarget.get(), scheduler);
-        scheduler.scheduleEvent(this, new Activity(this, world, imageStore, scheduler), 1);
+        scheduler.scheduleEvent(this, new Activity(this, world, imageStore, scheduler), this.getActionPeriod());
 
         }
 }

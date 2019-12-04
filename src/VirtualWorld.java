@@ -51,6 +51,7 @@ public final class VirtualWorld
    public EventScheduler scheduler;
    private static boolean start = false;
    private int numMovees = 0;
+   public static boolean end = false;
 
    public long next_time;
 
@@ -100,8 +101,22 @@ public final class VirtualWorld
          textSize(32);
          text("Your battery is running low (4%)", 175, 200);
          text("Click Anywhere to Continue", 175, 300);
-
       }
+      if (end)
+      { drawEndScreen(); }
+   }
+
+   public void drawEndScreen()
+   {
+
+      Color color = new Color(255, 0, 0);
+      fill(color.getRGB());
+      rect(0, 0, 800, 650);
+      fill(255);
+      textSize(40);
+      text("You lose!", 175, 200);
+      exit();
+
    }
 
    public void keyPressed()
@@ -128,7 +143,7 @@ public final class VirtualWorld
          }
          if (start == true){
             numMovees +=1;
-            if (numMovees == 5)
+            if (numMovees == 10)
             {
                StudentFactory.addStudent(world, imageStore, scheduler);
                numMovees = 0;
@@ -385,4 +400,6 @@ public final class VirtualWorld
    public static void setStart(boolean start) {
       VirtualWorld.start = start;
    }
+
+
 }

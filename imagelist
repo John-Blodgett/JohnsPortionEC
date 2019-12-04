@@ -34,9 +34,9 @@ quake images/quake5.bmp 255 255 255 0
 quake images/quake6.bmp 255 255 255 0
 seaGrass images/Seaweed1.bmp 255 255 255 0
 background_default images/none.bmp
-madStudent images/none.bmp
-annoyStudent images/none.bmp
-inqStudent images/none.bmp
+madStudent images/MadStudent.bmp
+annoyStudent images/AnnoyingStudent.bmp
+inqStudent images/InqStudent.bmp
 PowerBrick images/PowerBrick.bmp
 Plug images/Plug.bmp
 IntoOutlet images/IntoOutlet.bmp
@@ -45,5 +45,3 @@ hatalsky images/hatalsky2.bmp
 hatalsky images/hatalsky3.bmp
 hatalsky images/hatalsky4.bmp
 hatalsky images/hatalsky5.bmp
-
-

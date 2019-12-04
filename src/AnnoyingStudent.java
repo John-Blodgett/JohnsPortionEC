@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AnnoyingStudent extends MoveEntity implements Student {
-    PathingStrategy strategy = new StudentPathingAlgorithm();
+    PathingStrategy strategy = new AStarPathingStrategy();
 
     public AnnoyingStudent(String id, Point position, List<PImage> images, int imageIndex, int actionPeriod,
                            int animationPeriod) {

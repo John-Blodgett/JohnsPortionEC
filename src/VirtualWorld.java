@@ -52,9 +52,10 @@ public final class VirtualWorld
    public EventScheduler scheduler;
    private static boolean start = false;
    private int numMovees = 0;
-   public static boolean endLose = false;
-   public static boolean endWin = false;
+   public static boolean end = false;
    private static boolean startSpawn = true;
+   private static boolean startBattery = true;
+   private static boolean startGameTimer = true;
 
    public long next_time;
 
@@ -83,7 +84,31 @@ public final class VirtualWorld
       next_time = System.currentTimeMillis() + TIMER_ACTION_PERIOD;
    }
 
-   public void mouseClicked(){start = true;}
+   public void mouseClicked(){
+      start = true;
+      TimerTask gameTimerTask = new TimerTask() {
+         public void run() {
+            //go to lose game screen
+            loseGame
+         }
+      };
+      Timer gameTimer = new Timer("Timer");
+
+      long gameDelay = 1000L;
+      gameTimer.schedule(gameTimerTask, gameDelay);
+
+      TimerTask batteryTask = new TimerTask() {
+         public void run() {
+            //lose battery cell
+            loseBatteryCell
+         }
+      };
+      Timer batteryTimer = new Timer("Timer");
+
+      long battDelay  = 15*1000L;
+      long period = 15*1000L;
+      batteryTimer.scheduleAtFixedRate(batteryTask, battDelay, period);
+   }
 
    public void draw()
    {
@@ -105,16 +130,12 @@ public final class VirtualWorld
          text("Your battery is running low (4%)", 175, 200);
          text("Click Anywhere to Continue", 175, 300);
       }
-      if (endLose) {
-            drawEndScreen();
-      }
-      if (endWin) {
-         drawWinScreen();
-      }
-
+      if (end)
+      { drawEndScreen(); }
    }
 
-   public void drawEndScreen() {
+   public void drawEndScreen()
+   {
 
       Color color = new Color(255, 0, 0);
       fill(color.getRGB());
@@ -122,16 +143,7 @@ public final class VirtualWorld
       fill(255);
       textSize(40);
       text("You lose!", 175, 200);
-
-   }
-   public void drawWinScreen() {
-
-      Color color = new Color(0, 100, 255);
-      fill(color.getRGB());
-      rect(0, 0, 800, 650);
-      fill(255);
-      textSize(40);
-      text("You win!", 175, 200);
+      exit();
 
    }
 
@@ -161,6 +173,7 @@ public final class VirtualWorld
             if (startSpawn){
                TimerTask repeatedTask = new TimerTask() {
                   public void run() {
+                     System.out.println("Spawn student");
                      StudentFactory.addStudent(world,imageStore,scheduler);
                   }
                };
@@ -274,8 +287,8 @@ public final class VirtualWorld
 
    public static void main(String [] args)
    {
-         parseCommandLine(args);
-         PApplet.main(VirtualWorld.class);
+      parseCommandLine(args);
+      PApplet.main(VirtualWorld.class);
    }
    public void load(Scanner in, WorldModel world, ImageStore imageStore)
    {

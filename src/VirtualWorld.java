@@ -59,6 +59,10 @@ public final class VirtualWorld
    private static int GAME_TIMER = 30;
    private static int BATTERY_INTERVALS = 5;
    private Random rand = new Random();
+   public static boolean hitByStudent = false;
+   public static boolean movePlayers = true;
+
+    Timer gameTimer = new Timer("Timer");
 
    public long next_time;
 
@@ -96,7 +100,7 @@ public final class VirtualWorld
             endLose = true;
          }
       };
-      Timer gameTimer = new Timer("Timer");
+//      Timer gameTimer = new Timer("Timer");
 
       long gameDelay = GAME_TIMER*1000L;
       gameTimer.schedule(gameTimerTask, gameDelay);
@@ -127,23 +131,31 @@ public final class VirtualWorld
 
    public void draw()
    {
-      if (start) {
-         long time = System.currentTimeMillis();
-         if (time >= next_time) {
-            EventScheduler.updateOnTime(this.scheduler, time);
-            next_time = time + TIMER_ACTION_PERIOD;
-         }
-         view.drawViewport();
-      }
-      else
-      {
-         Color color = new Color(1, 70, 174);
-         fill(color.getRGB());
-         rect(0, 0, 800, 650);
-         fill(255);
-         textSize(32);
-         text("Your battery is running low (4%)", 175, 200);
-         text("Click Anywhere to Continue", 175, 300);
+       if (movePlayers) {
+           if (start) {
+               long time = System.currentTimeMillis();
+               if (time >= next_time) {
+                   EventScheduler.updateOnTime(this.scheduler, time);
+                   next_time = time + TIMER_ACTION_PERIOD;
+               }
+               view.drawViewport();
+           } else {
+               Color color = new Color(1, 70, 174);
+               fill(color.getRGB());
+               rect(0, 0, 800, 650);
+               fill(255);
+               textSize(32);
+               text("Your battery is running low (4%)", 175, 200);
+               text("Click Anywhere to Continue", 175, 300);
+           }
+       }
+      if (hitByStudent){
+          Color color = new Color(0, 200, 255);
+          fill(color.getRGB());
+          rect(225,100,400,400);
+          textSize(32);
+          fill(255);
+          text("FROZEN!!!",350,250);
       }
       if (endWin)
       { drawWinScreen(); }
@@ -163,6 +175,7 @@ public final class VirtualWorld
    public void drawWinScreen()
    {
 
+      gameTimer.cancel();
       Color color = new Color(0, 100, 255);
       fill(color.getRGB());
       rect(0, 0, 800, 650);

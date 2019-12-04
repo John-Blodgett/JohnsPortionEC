@@ -69,13 +69,18 @@ public class Hatalsky extends AnimationEntity{
 
     public static void hitByStident()
     {
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
+        VirtualWorld.hitByStudent = true;
+        VirtualWorld.movePlayers = (false);
+        TimerTask hitTask = new TimerTask() {
             public void run() {
-                VirtualWorld.setStart(false); }
-                },5*1000 );
-        VirtualWorld.setStart(true);
+                VirtualWorld.movePlayers = true;
+                VirtualWorld.hitByStudent = false;
+            }
+        };
+        Timer hitTimer = new Timer("Timer");
+
+        long delay = 1500L;
+        hitTimer.schedule(hitTask, delay);
     }
 
 }

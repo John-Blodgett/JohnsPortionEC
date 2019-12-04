@@ -6,7 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Hatalsky extends AnimationEntity{
-    private int charger_part_count = 0;
+    public static int charger_part_count = 0;
     private static Hatalsky hatalsky;
     public static final String HATALSKY_ID = "hatalsky";
     public static final int HATALSKY_NUM_PROPERTIES = 4;
@@ -32,6 +32,14 @@ public class Hatalsky extends AnimationEntity{
 
     }
 
+    public boolean isInClassroom(Point p)
+    { if (17<= p.getX() && p.getX()<= 23 && 1<=p.getY() && p.getY()<=6)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public boolean moveTo(WorldModel world,
                           int dx, int dy, EventScheduler scheduler)
     {
@@ -46,6 +54,8 @@ public class Hatalsky extends AnimationEntity{
                 }
             }
             world.moveEntity(this, nextPoint);
+            if (isInClassroom(nextPoint) && this.charger_part_count==3)
+            { VirtualWorld.endWin = true; }
             return true;
         }
         return false;
@@ -67,4 +77,5 @@ public class Hatalsky extends AnimationEntity{
                 },5*1000 );
         VirtualWorld.setStart(true);
     }
+
 }

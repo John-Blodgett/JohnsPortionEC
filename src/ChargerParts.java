@@ -10,6 +10,7 @@ public abstract class ChargerParts extends Entity {
     public int getTotalParts(){return totalParts;}
     public void addPart(WorldModel world){
         this.totalParts +=1;
+        Hatalsky.charger_part_count+=1;
     world.removeEntity(this);}
 
 

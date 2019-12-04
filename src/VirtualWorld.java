@@ -52,7 +52,8 @@ public final class VirtualWorld
    public EventScheduler scheduler;
    private static boolean start = false;
    private int numMovees = 0;
-   public static boolean end = false;
+   public static boolean endLose = false;
+   public static boolean endWin = false;
    private static boolean startSpawn = true;
 
    public long next_time;
@@ -104,12 +105,16 @@ public final class VirtualWorld
          text("Your battery is running low (4%)", 175, 200);
          text("Click Anywhere to Continue", 175, 300);
       }
-      if (end)
-      { drawEndScreen(); }
+      if (endLose) {
+            drawEndScreen();
+      }
+      if (endWin) {
+         drawWinScreen();
+      }
+
    }
 
-   public void drawEndScreen()
-   {
+   public void drawEndScreen() {
 
       Color color = new Color(255, 0, 0);
       fill(color.getRGB());
@@ -117,7 +122,16 @@ public final class VirtualWorld
       fill(255);
       textSize(40);
       text("You lose!", 175, 200);
-      exit();
+
+   }
+   public void drawWinScreen() {
+
+      Color color = new Color(0, 100, 255);
+      fill(color.getRGB());
+      rect(0, 0, 800, 650);
+      fill(255);
+      textSize(40);
+      text("You win!", 175, 200);
 
    }
 
@@ -147,14 +161,13 @@ public final class VirtualWorld
             if (startSpawn){
                TimerTask repeatedTask = new TimerTask() {
                   public void run() {
-                     System.out.println("Spawn student");
                      StudentFactory.addStudent(world,imageStore,scheduler);
                   }
                };
                Timer timer = new Timer("Timer");
 
-               long delay  = 10000L;
-               long period = 10000L;
+               long delay  = 3000L;
+               long period = 3000L;
                timer.scheduleAtFixedRate(repeatedTask, delay, period);
                startSpawn = false;
             }

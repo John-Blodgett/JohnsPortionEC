@@ -280,9 +280,9 @@ background sea 16 2
 background sea 17 2
 background sea 18 2
 background sea 19 2
-background sea 20 2
+studendesk studendesk 20 2
 background sea 21 2
-background sea 22 2
+studendesk studendesk 22 2
 background sea 23 2
 background sea 24 2
 background sea 0 3
@@ -330,9 +330,9 @@ background sea 16 4
 background sea 17 4
 background sea 18 4
 background sea 19 4
-background sea 20 4
+laptop laptop 18 4
 background sea 21 4
-background sea 22 4
+studendesk studendesk 22 4
 background sea 23 4
 background sea 24 4
 background sea 0 5
@@ -355,6 +355,7 @@ background sea 16 5
 background sea 17 5
 background sea 18 5
 background sea 19 5
+studendesk studendesk 20 4
 background sea 20 5
 background sea 21 5
 background sea 22 5
@@ -380,9 +381,9 @@ background sea 16 6
 background sea 17 6
 background sea 18 6
 background sea 19 6
-background sea 20 6
+studendesk studendesk 20 6
 background sea 21 6
-background sea 22 6
+studendesk studendesk 22 6
 background sea 23 6
 background sea 24 6
 background sea 0 7

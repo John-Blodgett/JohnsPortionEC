@@ -9,9 +9,10 @@ public class Battery3 extends Entity{
     }
     public Battery4 changeBattery(WorldModel world , ImageStore imageStore, EventScheduler scheduler){
         world.removeEntity(this);
-        Battery4 newBattery = new Battery4(Battery4.BATTERY4_ID, new Point(23, 0), imageStore.getImageList(imageStore, Battery4.BATTERY4_ID), 0,0,255);
+        Battery4 newBattery = new Battery4(Battery4.BATTERY4_ID, new Point(23, 0), imageStore.getImageList(imageStore, Battery4.BATTERY4_ID), 0,992,100);
         world.addEntity(newBattery);
-        newBattery.scheduleActions(scheduler, world, imageStore);
+        scheduler.scheduleEvent(newBattery, new Animation(newBattery, world, imageStore,scheduler, 0),
+                newBattery.getAnimationPeriod());
         return newBattery;
     }
 }

@@ -18,6 +18,7 @@ public class AnnoyingStudent extends MoveEntity implements Student {
         {
                 world.removeEntity(this);
                 scheduler.unscheduleAllEvents(this);
+                Hatalsky.hitByStident();
         }
         else if (!this.getPosition().equals(nextPos)) {
             world.moveEntity(this, nextPos);

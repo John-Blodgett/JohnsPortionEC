@@ -34,20 +34,20 @@ public class StudentFactory {
             }
 
             if (studentNum == 0) {
-                MadStudent student = new MadStudent(MAD_STUDENT_ID, start, imageStore.getImageList(imageStore, MAD_STUDENT_ID), 0, 750, 0);
+                MadStudent student = new MadStudent(MAD_STUDENT_ID, start, imageStore.getImageList(imageStore, MAD_STUDENT_ID), 0, 550, 0);
                 world.tryAddEntity(student);
-                scheduler.scheduleEvent(student, new Activity(student, world, imageStore, scheduler), 750);
+                scheduler.scheduleEvent(student, new Activity(student, world, imageStore, scheduler), 550);
                 return student;
             } else if (studentNum == 1) {
-                InquisiteStudent student = new InquisiteStudent(INQ_STUDENT_ID, start, imageStore.getImageList(imageStore, INQ_STUDENT_ID), 0, 750, 0);
+                InquisiteStudent student = new InquisiteStudent(INQ_STUDENT_ID, start, imageStore.getImageList(imageStore, INQ_STUDENT_ID), 0, 550, 0);
                 world.tryAddEntity(student);
-                scheduler.scheduleEvent(student, new Activity(student, world, imageStore, scheduler), 750);
+                scheduler.scheduleEvent(student, new Activity(student, world, imageStore, scheduler), 550);
                 return student;
             } else {
-                AnnoyingStudent student = new AnnoyingStudent(ANNOY_STUDENT_ID, start, imageStore.getImageList(imageStore, ANNOY_STUDENT_ID), 0, 750, 0);
+                AnnoyingStudent student = new AnnoyingStudent(ANNOY_STUDENT_ID, start, imageStore.getImageList(imageStore, ANNOY_STUDENT_ID), 0, 550, 0);
                 world.tryAddEntity(student);
 
-                scheduler.scheduleEvent(student, new Activity(student, world, imageStore, scheduler), 750);
+                scheduler.scheduleEvent(student, new Activity(student, world, imageStore, scheduler), 550);
 
                 return student;
             }

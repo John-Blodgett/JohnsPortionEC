@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Time;
 import java.util.*;
 import java.util.List;
 
@@ -50,15 +51,18 @@ public final class VirtualWorld
    public WorldView view;
    public EventScheduler scheduler;
    private static boolean start = false;
-   private int numMovees = 0;
    public static boolean endWin = false;
    public static boolean endLose = false;
    private static boolean startSpawn = true;
    private Entity curBattery;
    private static boolean startBattery = true;
-   private static int GAME_TIMER = 30;
-   private static int BATTERY_INTERVALS = 5;
+   private static int GAME_TIMER = 32;
+   private static int BATTERY_INTERVALS = 8;
    private Random rand = new Random();
+   public static boolean hitByStudent = false;
+   public static boolean movePlayers = true;
+
+    Timer gameTimer = new Timer("Timer");
 
    public long next_time;
 
@@ -96,7 +100,7 @@ public final class VirtualWorld
             endLose = true;
          }
       };
-      Timer gameTimer = new Timer("Timer");
+//      Timer gameTimer = new Timer("Timer");
 
       long gameDelay = GAME_TIMER*1000L;
       gameTimer.schedule(gameTimerTask, gameDelay);
@@ -121,29 +125,39 @@ public final class VirtualWorld
       {curBattery = ((Battery1)curBattery).changeBattery(world, imageStore);}
       else if (curBattery instanceof Battery2)
       {curBattery = ((Battery2)curBattery).changeBattery(world, imageStore);}
-      else
+      else if (curBattery instanceof Battery3)
       { curBattery = ((Battery3)curBattery).changeBattery(world, imageStore, scheduler);}
    }
 
    public void draw()
    {
-      if (start) {
-         long time = System.currentTimeMillis();
-         if (time >= next_time) {
-            EventScheduler.updateOnTime(this.scheduler, time);
-            next_time = time + TIMER_ACTION_PERIOD;
-         }
-         view.drawViewport();
-      }
-      else
-      {
-         Color color = new Color(1, 70, 174);
-         fill(color.getRGB());
-         rect(0, 0, 800, 650);
-         fill(255);
-         textSize(32);
-         text("Your battery is running low (4%)", 175, 200);
-         text("Click Anywhere to Continue", 175, 300);
+       if (movePlayers) {
+           if (start) {
+               long time = System.currentTimeMillis();
+               if (time >= next_time) {
+                   EventScheduler.updateOnTime(this.scheduler, time);
+                   next_time = time + TIMER_ACTION_PERIOD;
+               }
+               view.drawViewport();
+           } else {
+               Color color = new Color(1, 70, 174);
+               fill(color.getRGB());
+               rect(0, 0, 800, 650);
+               fill(255);
+               textSize(32);
+               text("Your battery is running low (4%)", 175, 200);
+               text("Collect all the charger parts and return", 100, 300);
+              text("to the class before your computer dies!", 100, 350);
+               text("Click Anywhere to Continue", 175, 450);
+           }
+       }
+      if (hitByStudent){
+          Color color = new Color(0, 200, 255);
+          fill(color.getRGB());
+          rect(225,100,400,400);
+          textSize(32);
+          fill(255);
+          text("FROZEN!!!",350,250);
       }
       if (endWin)
       { drawWinScreen(); }
@@ -153,22 +167,24 @@ public final class VirtualWorld
 
    public void drawLoseScreen()
    {
+      startBattery = false;
       Color color = new Color(255, 0, 0);
       fill(color.getRGB());
       rect(0, 0, 800, 650);
       fill(255);
-      textSize(40);
-      text("You lose!", 175, 200);
+      textSize(50);
+      text("You lose!", 300, 400);
    }
    public void drawWinScreen()
    {
-
+      startBattery = false;
+      gameTimer.cancel();
       Color color = new Color(0, 100, 255);
       fill(color.getRGB());
       rect(0, 0, 800, 650);
       fill(255);
       textSize(40);
-      text("You win!", 175, 200);
+      text("You win!", 200, 200);
    }
 
    public void keyPressed()
@@ -300,7 +316,6 @@ public final class VirtualWorld
       TimerTask task = new TimerTask() {
          @Override
          public void run() {
-            System.out.println("Spawn student");
             scheduleStudentSpawn();
          }
       };
@@ -347,8 +362,6 @@ public final class VirtualWorld
          switch (properties[PROPERTY_KEY]) {
             case BGND_KEY:
                return parseBackground(properties, world, imageStore);
-            case Octo_Full.OCTO_KEY:
-               return parseOcto(properties, world, imageStore);
             case Obstacle.OBSTACLE_KEY:
                return parseObstacle(properties, world, imageStore);
             case Hatalsky.HATALSKY_ID:
@@ -361,6 +374,10 @@ public final class VirtualWorld
                return parsePowerBrick(properties, world, imageStore);
             case Battery1.BATTERY1_ID:
                return parseBattery(properties, world, imageStore);
+            case "laptop":
+               return parseBackground_comp(properties, world, imageStore);
+            case "studendesk":
+               return parseBackground_desk(properties, world, imageStore);
          }
       }
 
@@ -457,26 +474,36 @@ public final class VirtualWorld
 
       return properties.length == BGND_NUM_PROPERTIES;
    }
-
-
-   public static boolean parseOcto(String [] properties, WorldModel world,
-                                   ImageStore imageStore)
+   public static boolean parseBackground_comp(String [] properties,
+                                         WorldModel world, ImageStore imageStore)
    {
-      if (properties.length == Octo_Full.OCTO_NUM_PROPERTIES)
+      if (properties.length == BGND_NUM_PROPERTIES)
       {
-         Point pt = new Point(Integer.parseInt(properties[Octo_Full.OCTO_COL]),
-                 Integer.parseInt(properties[Octo_Full.OCTO_ROW]));
-         Octo_Not_Full octo = new Octo_Not_Full(properties[Octo_Full.OCTO_ID],
-                 Integer.parseInt(properties[Octo_Full.OCTO_LIMIT]),
-                 pt,
-                 Integer.parseInt(properties[Octo_Full.OCTO_ACTION_PERIOD]),
-                 Integer.parseInt(properties[Octo_Full.OCTO_ANIMATION_PERIOD]),
-                 ImageStore.getImageList(imageStore, Octo_Full.OCTO_KEY));
-         world.tryAddEntity( octo);
+         Point pt = new Point(Integer.parseInt(properties[BGND_COL]),
+                 Integer.parseInt(properties[BGND_ROW]));
+         String id = properties[BGND_ID];
+         world.setBackground( pt,
+                 new Background(id, imageStore.getImageList(imageStore, id)));
       }
 
-      return properties.length == Octo_Full.OCTO_NUM_PROPERTIES;
+      return properties.length == BGND_NUM_PROPERTIES;
    }
+   public static boolean parseBackground_desk(String [] properties,
+                                         WorldModel world, ImageStore imageStore)
+   {
+      if (properties.length == BGND_NUM_PROPERTIES)
+      {
+         Point pt = new Point(Integer.parseInt(properties[BGND_COL]),
+                 Integer.parseInt(properties[BGND_ROW]));
+         String id = properties[BGND_ID];
+         world.setBackground( pt,
+                 new Background(id, imageStore.getImageList(imageStore, id)));
+      }
+
+      return properties.length == BGND_NUM_PROPERTIES;
+   }
+
+
 
    public static boolean parseObstacle(String [] properties, WorldModel world,
                                        ImageStore imageStore)
@@ -499,14 +526,9 @@ public final class VirtualWorld
    public static final int BGND_ID = 1;
    public static final int BGND_COL = 2;
    public static final int BGND_ROW = 3;
-
-   public static final int COLOR_MASK = 0xffffff;
-   public static final int KEYED_IMAGE_MIN = 5;
    public static final int PROPERTY_KEY = 0;
 
-   public static void setStart(boolean start) {
-      VirtualWorld.start = start;
-   }
+
 
 
 }

@@ -178,6 +178,7 @@ public final class VirtualWorld
    public void drawWinScreen()
    {
       startBattery = false;
+
       gameTimer.cancel();
       Color color = new Color(0, 100, 255);
       fill(color.getRGB());
